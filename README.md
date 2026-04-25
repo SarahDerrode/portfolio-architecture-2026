@@ -2,7 +2,7 @@
 
 Site web statique reproduisant le portfolio d'architecture (L2, ENSA Lyon).
 
-## Contenu du dossier
+## Contenu du dossier 
 
 ```
 .
