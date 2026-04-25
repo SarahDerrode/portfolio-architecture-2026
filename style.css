@@ -1,0 +1,600 @@
+/* =====================================================
+   Portfolio Sarah Derrode
+   Reproduction fidèle du style PDF : typographie
+   éditoriale serif, noir sur blanc, touches pastel.
+   ===================================================== */
+
+/* ---------- VARIABLES ---------- */
+:root {
+  --ink: #0a0a0a;          /* noir légèrement adouci */
+  --ink-soft: #2c2c2c;
+  --ink-mute: #6a6a6a;
+  --paper: #fbfaf7;        /* blanc cassé très légèrement chaud */
+  --rule: #1a1a1a;
+  --rule-soft: #cfcdc7;
+
+  /* Surlignages pastels, identiques au PDF */
+  --mark-yellow: #fff3a8;
+  --mark-teal:   #bde6de;
+  --mark-coral:  #f8c6ba;
+  --mark-green:  #c6e8a5;
+
+  --font-display: "Cormorant Garamond", "Libre Caslon Text", Georgia, serif;
+  --font-body:    "Libre Caslon Text", Georgia, "Times New Roman", serif;
+
+  --page-max: 1280px;
+  --gutter: clamp(1.5rem, 4vw, 3.5rem);
+}
+
+/* ---------- RESET & BASE ---------- */
+*, *::before, *::after { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: 17px;
+  line-height: 1.55;
+  font-weight: 400;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+img { max-width: 100%; display: block; height: auto; }
+a   { color: inherit; }
+
+/* ---------- NAVIGATION ---------- */
+.nav {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  background: rgba(251, 250, 247, 0.92);
+  backdrop-filter: saturate(140%) blur(8px);
+  -webkit-backdrop-filter: saturate(140%) blur(8px);
+  border-bottom: 1px solid var(--rule-soft);
+}
+.nav-inner {
+  max-width: var(--page-max);
+  margin: 0 auto;
+  padding: 0.9rem var(--gutter);
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 2rem;
+}
+.nav-brand {
+  font-family: var(--font-display);
+  font-size: 1.35rem;
+  font-weight: 500;
+  text-decoration: none;
+  letter-spacing: 0.01em;
+}
+.nav-brand-dot { color: var(--ink); }
+.nav-links {
+  list-style: none;
+  display: flex;
+  gap: 1.75rem;
+  margin: 0;
+  padding: 0;
+  font-family: var(--font-display);
+  font-size: 1.05rem;
+}
+.nav-links a {
+  text-decoration: none;
+  color: var(--ink-soft);
+  position: relative;
+  padding-bottom: 2px;
+  transition: color 0.2s;
+}
+.nav-links a::after {
+  content: "";
+  position: absolute;
+  left: 0; right: 0; bottom: 0;
+  height: 1px;
+  background: var(--ink);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.25s ease;
+}
+.nav-links a:hover { color: var(--ink); }
+.nav-links a:hover::after { transform: scaleX(1); }
+
+@media (max-width: 720px) {
+  .nav-inner { flex-wrap: wrap; padding: 0.7rem 1.2rem; }
+  .nav-brand { font-size: 1.1rem; }
+  .nav-links { gap: 0.95rem; font-size: 0.92rem; flex-wrap: wrap; }
+}
+
+/* ---------- HERO ---------- */
+.hero {
+  max-width: var(--page-max);
+  margin: 0 auto;
+  padding: clamp(2rem, 5vw, 4rem) var(--gutter) clamp(3rem, 6vw, 6rem);
+  display: grid;
+  grid-template-columns: 1.1fr 1fr;
+  gap: clamp(2rem, 5vw, 5rem);
+  align-items: center;
+}
+.hero-image {
+  border: 1px solid var(--rule-soft);
+  background: #fff;
+  box-shadow: 0 30px 60px -30px rgba(0,0,0,0.15);
+}
+.hero-image img { width: 100%; height: auto; }
+
+.hero-eyebrow {
+  font-family: var(--font-body);
+  font-size: 0.9rem;
+  letter-spacing: 0.02em;
+  color: var(--ink-mute);
+  margin: 0 0 1.25rem 0;
+  font-style: italic;
+}
+.hero-title {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: clamp(3.5rem, 9vw, 7rem);
+  line-height: 0.95;
+  margin: 0 0 0.5rem 0;
+  letter-spacing: -0.01em;
+}
+.hero-title .dot { font-weight: 400; }
+
+.hero-subtitle {
+  font-family: var(--font-display);
+  font-weight: 300;
+  font-size: clamp(1.6rem, 3vw, 2.2rem);
+  margin: 0 0 1.5rem 0;
+  letter-spacing: 0.04em;
+}
+.hero-subtitle strong {
+  font-weight: 600;
+  letter-spacing: 0.06em;
+}
+
+.hero-meta {
+  font-size: 1.02rem;
+  color: var(--ink-soft);
+  margin: 0 0 2rem 0;
+  max-width: 32ch;
+  line-height: 1.5;
+}
+
+@media (max-width: 820px) {
+  .hero { grid-template-columns: 1fr; gap: 2rem; padding-top: 2rem; }
+  .hero-image { order: 2; max-width: 420px; margin: 0 auto; }
+  .hero-text { order: 1; }
+}
+
+/* ---------- BOUTON TÉLÉCHARGER ---------- */
+.btn-download {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.65rem;
+  padding: 0.9rem 1.4rem;
+  border: 1px solid var(--ink);
+  color: var(--ink);
+  background: transparent;
+  font-family: var(--font-display);
+  font-size: 1.05rem;
+  text-decoration: none;
+  transition: background 0.25s ease, color 0.25s ease;
+  cursor: pointer;
+  letter-spacing: 0.015em;
+}
+.btn-download:hover,
+.btn-download:focus-visible {
+  background: var(--ink);
+  color: var(--paper);
+}
+.btn-download svg { stroke-width: 1.5; }
+
+/* ---------- ABOUT / CV ---------- */
+.about {
+  max-width: var(--page-max);
+  margin: 0 auto;
+  padding: clamp(3rem, 6vw, 5rem) var(--gutter);
+  border-top: 1px solid var(--rule-soft);
+}
+.about-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: clamp(2rem, 5vw, 4.5rem);
+}
+
+.section-title {
+  font-family: var(--font-display);
+  font-weight: 300;
+  font-size: clamp(2.2rem, 4vw, 3rem);
+  line-height: 1;
+  margin: 0 0 2rem 0;
+  position: relative;
+}
+.section-title strong {
+  font-weight: 600;
+  letter-spacing: 0.05em;
+}
+.section-title-line {
+  display: block;
+  width: 140px;
+  height: 1px;
+  background: var(--rule);
+  margin-top: 10px;
+}
+
+.lede {
+  font-family: var(--font-display);
+  font-size: clamp(1.1rem, 1.6vw, 1.25rem);
+  font-weight: 400;
+  font-style: italic;
+  color: var(--ink-soft);
+  max-width: 52ch;
+  margin: 0 0 2.75rem 0;
+  line-height: 1.5;
+}
+
+.cv-title {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: 1.6rem;
+  margin: 2.5rem 0 1.25rem 0;
+  letter-spacing: 0.01em;
+  position: relative;
+  display: inline-block;
+}
+.cv-line {
+  display: block;
+  width: 100%;
+  min-width: 160px;
+  height: 1px;
+  background: var(--rule);
+  margin-top: 4px;
+}
+
+.cv-entry {
+  display: grid;
+  grid-template-columns: 130px 1fr;
+  gap: 1.5rem;
+  padding: 0.9rem 0;
+  border-bottom: 1px dashed var(--rule-soft);
+}
+.cv-entry:last-child { border-bottom: none; }
+.cv-date {
+  font-family: var(--font-display);
+  font-size: 0.95rem;
+  color: var(--ink-mute);
+  font-style: italic;
+  padding-top: 2px;
+}
+.cv-body { font-size: 0.98rem; line-height: 1.55; }
+.cv-body strong { font-weight: 700; }
+.cv-body em { font-style: italic; color: var(--ink-soft); }
+
+.about-aside {
+  font-size: 0.92rem;
+  line-height: 1.6;
+}
+.aside-block { margin-bottom: 2rem; }
+.aside-title {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: 1.25rem;
+  margin: 0 0 0.5rem 0;
+}
+.aside-line {
+  display: block;
+  width: 90%;
+  height: 1px;
+  background: var(--rule);
+  margin: 4px 0 0.8rem 0;
+}
+.aside-block p {
+  margin: 0;
+  color: var(--ink-soft);
+}
+
+@media (max-width: 820px) {
+  .about-grid { grid-template-columns: 1fr; }
+  .cv-entry { grid-template-columns: 1fr; gap: 0.3rem; }
+}
+
+/* ---------- SECTIONS DE PROJETS ---------- */
+.section {
+  max-width: var(--page-max);
+  margin: 0 auto;
+  padding: clamp(4rem, 7vw, 6rem) var(--gutter);
+  border-top: 1px solid var(--rule-soft);
+}
+
+.section-head { margin-bottom: clamp(2rem, 4vw, 3.5rem); }
+
+.eyebrow {
+  font-family: var(--font-body);
+  font-style: italic;
+  font-size: 0.92rem;
+  color: var(--ink-mute);
+  margin: 0 0 0.5rem 0;
+  letter-spacing: 0.04em;
+}
+
+.section-h2 {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: clamp(2.5rem, 5.5vw, 4.2rem);
+  line-height: 1;
+  margin: 0;
+  letter-spacing: -0.005em;
+}
+.h2-dot, .h3-dot { font-weight: 400; }
+
+.project {
+  margin-bottom: clamp(3rem, 5vw, 5rem);
+  padding-bottom: clamp(2rem, 4vw, 3rem);
+  border-bottom: 1px solid var(--rule-soft);
+}
+.project:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+
+.project-head {
+  max-width: 780px;
+  margin: 0 0 2.25rem 0;
+}
+.project-date {
+  font-family: var(--font-body);
+  font-size: 0.88rem;
+  font-style: italic;
+  color: var(--ink-mute);
+  margin: 0 0 0.8rem 0;
+  letter-spacing: 0.02em;
+}
+.project-title {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: clamp(2rem, 4vw, 3rem);
+  line-height: 1.05;
+  margin: 0 0 1.25rem 0;
+}
+.trip-title { font-size: clamp(1.8rem, 3.5vw, 2.6rem); }
+
+.project-question {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: clamp(1.15rem, 1.8vw, 1.4rem);
+  line-height: 1.5;
+  margin: 0;
+  color: var(--ink-soft);
+  max-width: 60ch;
+}
+
+/* Surlignages pastel type stabilo */
+mark {
+  background: var(--mark-yellow);
+  color: var(--ink);
+  padding: 0 0.25em;
+  font-style: normal;
+  font-weight: 500;
+  border-radius: 2px;
+}
+mark.mark-yellow { background: var(--mark-yellow); }
+mark.mark-teal   { background: var(--mark-teal); }
+mark.mark-coral  { background: var(--mark-coral); }
+mark.mark-green  { background: var(--mark-green); }
+
+/* Grille des pages du projet — format double-page rappelant le livre */
+.project-pages {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+  gap: clamp(1.5rem, 3vw, 2.5rem);
+}
+.page-link {
+  display: block;
+  overflow: hidden;
+  border: 1px solid var(--rule-soft);
+  background: #fff;
+  text-decoration: none;
+  position: relative;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  box-shadow: 0 2px 8px -4px rgba(0,0,0,0.08);
+  padding: 8px;
+}
+.page-link:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 18px 40px -20px rgba(0,0,0,0.22);
+}
+.page-link img {
+  width: 100%;
+  height: auto;
+  display: block;
+  transition: transform 0.45s ease;
+}
+.page-link:hover img { transform: scale(1.01); }
+
+@media (max-width: 640px) {
+  .project-pages {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+}
+
+/* ---------- CONTACT ---------- */
+.contact-section {
+  background: var(--ink);
+  color: var(--paper);
+  margin-top: clamp(3rem, 6vw, 5rem);
+}
+.contact-inner {
+  max-width: var(--page-max);
+  margin: 0 auto;
+  padding: clamp(4rem, 8vw, 7rem) var(--gutter);
+  text-align: center;
+}
+.contact-h2 {
+  color: var(--paper);
+  margin-bottom: 1.25rem;
+}
+.contact-lede {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 1.15rem;
+  color: #d4d2cd;
+  margin: 0 0 2rem 0;
+}
+.contact-email {
+  font-family: var(--font-display);
+  font-size: clamp(1.6rem, 3.5vw, 2.4rem);
+  margin: 0 0 2.5rem 0;
+  letter-spacing: 0.01em;
+}
+.contact-email a {
+  color: var(--paper);
+  text-decoration: none;
+  border-bottom: 1px solid rgba(251, 250, 247, 0.4);
+  padding-bottom: 4px;
+  transition: border-color 0.25s ease;
+}
+.contact-email a:hover { border-color: var(--paper); }
+
+.btn-download-alt {
+  border-color: var(--paper);
+  color: var(--paper);
+}
+.btn-download-alt:hover,
+.btn-download-alt:focus-visible {
+  background: var(--paper);
+  color: var(--ink);
+}
+
+/* ---------- FOOTER ---------- */
+.footer {
+  background: var(--ink);
+  color: #8e8c86;
+  border-top: 1px solid #2a2a2a;
+  text-align: center;
+  font-family: var(--font-body);
+  font-size: 0.85rem;
+  font-style: italic;
+  padding: 1.5rem var(--gutter);
+  letter-spacing: 0.02em;
+}
+
+/* ---------- ACCESSIBILITÉ / FOCUS ---------- */
+:focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: 3px;
+}
+
+/* ---------- REDUCE MOTION ---------- */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0s !important;
+    transition-duration: 0s !important;
+  }
+  html { scroll-behavior: auto; }
+}
+
+/* ---------- PRINT ---------- */
+@media print {
+  .nav, .contact-section, .footer, .btn-download { display: none; }
+  body { background: #fff; color: #000; }
+}
+
+/* ---------- HERO BUTTONS ---------- */
+.hero-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  align-items: center;
+}
+
+/* Bouton secondaire (107 Mo) : moins mis en avant */
+.btn-download-secondary {
+  opacity: 0.6;
+  font-size: 0.9rem;
+  padding: 0.7rem 1.1rem;
+}
+.btn-download-secondary:hover,
+.btn-download-secondary:focus-visible {
+  opacity: 1;
+}
+
+/* Version alt sur fond sombre */
+.btn-download-secondary-alt {
+  border-color: rgba(251,250,247,0.4);
+  color: rgba(251,250,247,0.55);
+  font-size: 0.9rem;
+  padding: 0.7rem 1.1rem;
+}
+.btn-download-secondary-alt:hover,
+.btn-download-secondary-alt:focus-visible {
+  border-color: var(--paper);
+  color: var(--paper);
+  background: transparent;
+}
+
+/* ---------- BOUTON LINKEDIN ---------- */
+.btn-linkedin {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.9rem 1.2rem;
+  border: 1px solid #0a66c2;
+  color: #0a66c2;
+  background: transparent;
+  font-family: var(--font-display);
+  font-size: 1.05rem;
+  text-decoration: none;
+  transition: background 0.25s ease, color 0.25s ease;
+  letter-spacing: 0.01em;
+}
+.btn-linkedin:hover,
+.btn-linkedin:focus-visible {
+  background: #0a66c2;
+  color: #fff;
+}
+
+/* Version alt (sur fond sombre) */
+.btn-linkedin-alt {
+  border-color: rgba(10, 102, 194, 0.7);
+  color: #6ab0f5;
+}
+.btn-linkedin-alt:hover,
+.btn-linkedin-alt:focus-visible {
+  background: #0a66c2;
+  color: #fff;
+  border-color: #0a66c2;
+}
+
+/* ---------- CONTACT BUTTONS ---------- */
+.contact-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  justify-content: center;
+  align-items: center;
+}
+
+/* ---------- ASIDE LINKEDIN ---------- */
+.aside-linkedin {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin-top: 0.6rem;
+  font-family: var(--font-display);
+  font-size: 0.95rem;
+  color: #0a66c2;
+  text-decoration: none;
+  transition: opacity 0.2s;
+}
+.aside-linkedin:hover { opacity: 0.75; }
+
+/* ---------- FOOTER LINK ---------- */
+.footer a {
+  color: #8e8c86;
+  text-decoration: none;
+  border-bottom: 1px solid rgba(142,140,134,0.4);
+  transition: color 0.2s, border-color 0.2s;
+}
+.footer a:hover { color: #c8c5be; border-color: #c8c5be; }
