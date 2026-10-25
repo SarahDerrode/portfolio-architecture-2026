@@ -31,6 +31,9 @@
 
 html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
 
+/* Les ancres ne doivent pas finir sous la nav collante */
+[id] { scroll-margin-top: 4.5rem; }
+
 body {
   margin: 0;
   background: var(--paper);
@@ -100,13 +103,28 @@ a   { color: inherit; }
   transform-origin: left;
   transition: transform 0.25s ease;
 }
-.nav-links a:hover { color: var(--ink); }
-.nav-links a:hover::after { transform: scaleX(1); }
+.nav-links a:hover,
+.nav-links a.is-active { color: var(--ink); }
+.nav-links a:hover::after,
+.nav-links a.is-active::after { transform: scaleX(1); }
 
+/* Mobile : une seule ligne, les liens défilent horizontalement */
 @media (max-width: 720px) {
-  .nav-inner { flex-wrap: wrap; padding: 0.7rem 1.2rem; }
-  .nav-brand { font-size: 1.1rem; }
-  .nav-links { gap: 0.95rem; font-size: 0.92rem; flex-wrap: wrap; }
+  .nav-inner { padding: 0.7rem 0 0.7rem 1.2rem; gap: 1rem; align-items: center; }
+  .nav-brand { font-size: 1.1rem; white-space: nowrap; flex-shrink: 0; }
+  .nav-links {
+    gap: 1.1rem;
+    font-size: 0.95rem;
+    overflow-x: auto;
+    scrollbar-width: none;
+    padding-right: 1.2rem;
+    white-space: nowrap;
+    -webkit-mask-image: linear-gradient(to right, transparent 0, #000 0.8rem, #000 calc(100% - 1.6rem), transparent);
+            mask-image: linear-gradient(to right, transparent 0, #000 0.8rem, #000 calc(100% - 1.6rem), transparent);
+  }
+  .nav-links::-webkit-scrollbar { display: none; }
+  .nav-links li:first-child { padding-left: 0.8rem; }
+  [id] { scroll-margin-top: 3.5rem; }
 }
 
 /* ---------- HERO ---------- */
@@ -509,31 +527,6 @@ mark.mark-green  { background: var(--mark-green); }
   align-items: center;
 }
 
-/* Bouton secondaire (107 Mo) : moins mis en avant */
-.btn-download-secondary {
-  opacity: 0.6;
-  font-size: 0.9rem;
-  padding: 0.7rem 1.1rem;
-}
-.btn-download-secondary:hover,
-.btn-download-secondary:focus-visible {
-  opacity: 1;
-}
-
-/* Version alt sur fond sombre */
-.btn-download-secondary-alt {
-  border-color: rgba(251,250,247,0.4);
-  color: rgba(251,250,247,0.55);
-  font-size: 0.9rem;
-  padding: 0.7rem 1.1rem;
-}
-.btn-download-secondary-alt:hover,
-.btn-download-secondary-alt:focus-visible {
-  border-color: var(--paper);
-  color: var(--paper);
-  background: transparent;
-}
-
 /* ---------- BOUTON LINKEDIN ---------- */
 .btn-linkedin {
   display: inline-flex;
@@ -598,3 +591,67 @@ mark.mark-green  { background: var(--mark-green); }
   transition: color 0.2s, border-color 0.2s;
 }
 .footer a:hover { color: #c8c5be; border-color: #c8c5be; }
+
+/* ---------- LIGHTBOX ---------- */
+.lightbox {
+  position: fixed; inset: 0;
+  background: rgba(10, 10, 10, 0.94);
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.9rem;
+  z-index: 100;
+  padding: 2rem;
+}
+.lightbox.open { display: flex; }
+.lightbox img {
+  max-width: min(1200px, 95%);
+  max-height: calc(92vh - 3rem);
+  object-fit: contain;
+  background: #fff;
+  box-shadow: 0 30px 80px rgba(0,0,0,0.5);
+  touch-action: pan-y pinch-zoom;
+  user-select: none;
+}
+.lightbox-caption {
+  margin: 0;
+  color: #d4d2cd;
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 1.05rem;
+  text-align: center;
+  max-width: 60ch;
+}
+.lightbox-counter { color: #8e8c86; font-style: normal; margin-left: 0.6em; }
+.lightbox button {
+  position: absolute;
+  background: transparent;
+  border: 1px solid rgba(255,255,255,0.35);
+  color: #fff;
+  width: 48px; height: 48px;
+  font-size: 1.6rem;
+  cursor: pointer;
+  font-family: var(--font-display);
+  transition: background 0.2s, border-color 0.2s;
+  display: flex; align-items: center; justify-content: center;
+  line-height: 1;
+}
+.lightbox button:hover {
+  background: rgba(255,255,255,0.12);
+  border-color: rgba(255,255,255,0.6);
+}
+.lightbox :focus-visible { outline-color: #fff; }
+.lightbox-close { top: 1.5rem; right: 1.5rem; font-size: 1.8rem; }
+.lightbox-prev { left: 1.5rem; top: 50%; transform: translateY(-50%); }
+.lightbox-next { right: 1.5rem; top: 50%; transform: translateY(-50%); }
+@media (max-width: 640px) {
+  .lightbox { padding: 3.5rem 0.5rem 4.5rem; }
+  .lightbox img { max-width: 100%; max-height: 100%; }
+  .lightbox-caption { font-size: 0.95rem; padding: 0 1rem; }
+  /* Flèches en bas pour ne pas masquer la double page */
+  .lightbox-prev, .lightbox-next { top: auto; bottom: 0.8rem; transform: none; width: 44px; height: 44px; font-size: 1.3rem; }
+  .lightbox-prev { left: 0.8rem; }
+  .lightbox-next { right: 0.8rem; }
+  .lightbox-close { top: 0.6rem; right: 0.6rem; width: 44px; height: 44px; }
+}

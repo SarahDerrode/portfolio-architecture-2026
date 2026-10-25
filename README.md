@@ -10,10 +10,12 @@ Site web statique reproduisant le portfolio d'architecture (L2, ENSA Lyon).
 ├── style.css                     Feuille de style (typographie serif, palette sobre)
 ├── script.js                     Lightbox + navigation
 ├── favicon.svg                   Favicon « S. »
-├── Portfolio_Sarah_Derrode.pdf   PDF complet à télécharger (~107 Mo)
+├── Portfolio_Sarah_Derrode_10Mo.pdf  PDF complet à télécharger (~10 Mo)
 ├── images/
-│   ├── cover.jpg                 Couverture en haute résolution
-│   ├── pages/                    22 pages du PDF en 1600 px (pour la lightbox)
+│   ├── cover.jpg / cover.webp    Couverture (960 px, niveaux de gris)
+│   ├── og.jpg                    Image d'aperçu 1200×630 pour les partages (LinkedIn, mail…)
+│   ├── pages/                    Pages du PDF en 1600 px (lightbox + écrans haute densité)
+│   ├── medium/                   Pages en 1000 px (grille sur mobile / Retina)
 │   └── thumbs/                   Vignettes 600 px (pour la grille)
 └── README.md
 ```
@@ -58,9 +60,8 @@ Sur la page du dépôt fraîchement créé :
 1. Cliquer sur « uploading an existing file » (ou « Add file → Upload files »).
 2. Ouvrir le dossier du site dans votre explorateur de fichiers.
 3. Sélectionner **tout le contenu** (Ctrl+A sous Windows, Cmd+A sous macOS) et le glisser sur la zone de dépôt du navigateur.
-4. Attendre la fin du transfert — le PDF de 107 Mo prend quelques minutes selon la connexion.
-5. **Important** : GitHub refuse par défaut les fichiers > 100 Mo. Voir la section « Limite des 100 Mo » plus bas si c'est bloquant.
-6. Saisir un message de commit (ex. « Initial portfolio site ») et cliquer « Commit changes ».
+4. Attendre la fin du transfert (le PDF de 10 Mo prend quelques secondes). GitHub refuse les fichiers > 100 Mo : voir « Taille du PDF » plus bas.
+5. Saisir un message de commit (ex. « Initial portfolio site ») et cliquer « Commit changes ».
 
 **Option B — Avec Git en ligne de commande.**
 
@@ -99,47 +100,17 @@ Si Sarah veut `sarahderrode.fr` plutôt que `sderrode.github.io/portfolio` :
 
 ---
 
-## Limite des 100 Mo sur GitHub
+## Taille du PDF
 
-Le PDF du portfolio fait ~107 Mo et GitHub refuse les fichiers > 100 Mo dans un push normal. Trois solutions, par ordre de simplicité :
+GitHub refuse les fichiers de plus de 100 Mo : le site ne propose donc que la version allégée `Portfolio_Sarah_Derrode_10Mo.pdf`. Pour la régénérer à partir d'un PDF plus lourd :
 
-### Solution 1 — Héberger le PDF sur Google Drive (recommandé)
-
-C'est la solution la plus simple et la plus propre, et c'est d'ailleurs celle que nous utiliserons pour les mails aux cabinets.
-
-1. Uploader `Portfolio_Sarah_Derrode.pdf` sur Google Drive.
-2. Clic droit → « Partager » → « Tous ceux qui ont le lien » → Lecteur.
-3. Copier le lien.
-4. **Avant** de pousser sur GitHub :
-   - Supprimer le fichier `Portfolio_Sarah_Derrode.pdf` du dossier local.
-   - Dans `index.html`, remplacer les deux occurrences de `href="Portfolio_Sarah_Derrode.pdf"` par le lien Drive. Ajouter `target="_blank" rel="noopener"` à la place de `download` pour ouvrir le lien dans un nouvel onglet.
-
-Exemple (à faire aux 2 endroits dans `index.html`) :
-
-```html
-<!-- Avant -->
-<a class="btn-download" href="Portfolio_Sarah_Derrode.pdf" download>
-
-<!-- Après -->
-<a class="btn-download" href="https://drive.google.com/file/d/XXXXXXXXXXXXXXX/view" target="_blank" rel="noopener">
-```
-
-Astuce : pour **forcer le téléchargement** plutôt que l'ouverture dans le viewer Drive, utiliser l'URL de la forme `https://drive.google.com/uc?export=download&id=XXXXXXXXXXXXXXX` (remplacer `XXX` par l'ID du fichier extrait de l'URL de partage).
-
-### Solution 2 — Git LFS
-
-GitHub supporte « Git Large File Storage » pour les gros fichiers, mais la bande passante gratuite est limitée à 1 Go/mois. Pour un portfolio de 107 Mo, ça peut rapidement poser problème en cas de fort trafic. Non recommandé.
-
-### Solution 3 — Compresser le PDF
-
-Ouvrir le PDF dans un outil de compression (Smallpdf, iLovePDF, ou Ghostscript en ligne de commande). Viser < 100 Mo. Attention à la perte de qualité d'image — vérifier que les pages restent lisibles.
-
-En ligne de commande :
 ```bash
 gs -sDEVICE=pdfwrite -dCompatibilityLevel=1.4 -dPDFSETTINGS=/ebook \
    -dNOPAUSE -dQUIET -dBATCH \
-   -sOutputFile=Portfolio_compressed.pdf Portfolio_Sarah_Derrode.pdf
+   -sOutputFile=Portfolio_Sarah_Derrode_10Mo.pdf Portfolio_source.pdf
 ```
+
+Vérifier ensuite que les pages restent lisibles, et mettre à jour la taille indiquée sur les deux boutons de `index.html`.
 
 ---
 
@@ -158,11 +129,13 @@ Tous les trois sont gratuits pour un usage personnel.
 Le contenu éditorial est centralisé dans `index.html`. Chaque projet est dans un bloc `<article class="project">` facile à dupliquer. Pour ajouter un projet :
 
 1. Extraire les pages en JPEG (ou demander à Sarah de fournir les images).
-2. Les déposer dans `images/pages/` (version 1600 px) et `images/thumbs/` (version 600 px).
-3. Dupliquer un bloc `<article class="project">` dans `index.html` et adapter le titre, la date, la question de projet et les chemins d'images.
+2. Les déposer dans `images/pages/` (1600 px), `images/medium/` (1000 px) et `images/thumbs/` (600 px), avec le même nom de fichier.
+3. Dupliquer un bloc `<article class="project">` dans `index.html` et adapter le titre, la date, la question de projet et les chemins d'images (`href`, `src` **et** `srcset`). Garder `width`/`height` égaux aux dimensions réelles de la vignette pour éviter les sauts de mise en page. Le texte `alt` sert aussi de légende dans la lightbox : le rédiger comme une vraie légende.
 4. Commit + push → le site se met à jour automatiquement en ~1 minute sur GitHub Pages.
 
-Pour mettre à jour le PDF : remplacer le fichier et pousser le nouveau (ou mettre à jour le lien Drive si on a choisi la solution 1).
+Pour mettre à jour le PDF : remplacer le fichier et pousser le nouveau.
+
+Après une mise en ligne, l'aperçu LinkedIn peut rester en cache : le rafraîchir avec le [Post Inspector](https://www.linkedin.com/post-inspector/).
 
 ---
 
@@ -180,7 +153,8 @@ Elles reproduisent fidèlement l'ambiance typographique du PDF. Aucun fichier de
 
 - Structure HTML sémantique (nav, header, section, article, footer).
 - Attributs `alt` descriptifs sur toutes les images.
-- Navigation clavier complète (y compris la lightbox : flèches ← →, Échap).
+- Navigation clavier complète. La lightbox est un dialogue modal : focus placé dans la visionneuse et conservé (Tab), rendu à la vignette à la fermeture, flèches ← →, Échap. Légende et compteur annoncés aux lecteurs d'écran.
+- Sur mobile : balayage gauche/droite entre les pages, zoom au pincement conservé.
 - `prefers-reduced-motion` respecté (désactive les animations pour les utilisateurs concernés).
 - Contrastes texte/fond au-dessus des seuils WCAG AA.
 
